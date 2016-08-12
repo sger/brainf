@@ -31,7 +31,7 @@ func main() {
 		{
 			Name:    "file",
 			Aliases: []string{"f"},
-			Usage:   "open a file with extension .bf",
+			Usage:   "./brainf f hello_world.bf",
 			Action: func(c *cli.Context) error {
 
 				if len(c.Args().First()) > 0 {
@@ -47,10 +47,14 @@ func main() {
 			},
 		},
 		{
-			Name:    "add",
-			Aliases: []string{"a"},
-			Usage:   "Add",
+			Name:    "string",
+			Aliases: []string{"s"},
+			Usage:   "./brainf s `++++++++++`",
 			Action: func(c *cli.Context) error {
+
+				if len(c.Args().First()) > 0 {
+					fmt.Println(c.Args().First())
+				}
 
 				return nil
 			},
