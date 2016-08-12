@@ -6,8 +6,6 @@ import (
 	"os"
 )
 
-const dataSize int = 65535
-
 func main() {
 	args := os.Args
 	if len(args) != 2 {
