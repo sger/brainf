@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/codegangsta/cli"
@@ -34,15 +33,7 @@ func main() {
 			Usage:   "./brainf f hello_world.bf",
 			Action: func(c *cli.Context) error {
 
-				if len(c.Args().First()) > 0 {
-					data, err := ioutil.ReadFile(c.Args().First())
-					if err != nil {
-						fmt.Printf("Cannot open file %s\n", c.Args().First())
-						return nil
-					}
-
-					fmt.Println(string(data))
-				}
+				parseFile(c)
 				return nil
 			},
 		},
