@@ -15,7 +15,17 @@ func parseFile(c *cli.Context) error {
 			return nil
 		}
 
-		fmt.Println(string(data))
+		instructions, err := compile(string(data))
+
+		if err != nil {
+
+		}
+
+		err = output(instructions)
+
+		if err != nil {
+
+		}
 	}
 	return nil
 }
