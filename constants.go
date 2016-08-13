@@ -1,5 +1,6 @@
 package main
 
+// SIZE of the output compiler
 const SIZE int = 65535
 
 const (
