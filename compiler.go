@@ -10,7 +10,8 @@ import (
 func compile(tokens string) (instructions []Instruction, err error) {
 	var programCounter = 0
 	var stackProgramCounter = 0
-	stack := make([]int, 0)
+	//stack := make([]int, 0)
+	var stack []int
 	for _, token := range tokens {
 		switch token {
 		case '>':
@@ -43,7 +44,7 @@ func compile(tokens string) (instructions []Instruction, err error) {
 
 func output(instructions []Instruction) (err error) {
 	data := make([]int16, SIZE)
-	var ptr int = 0
+	var ptr = 0
 	reader := bufio.NewReader(os.Stdin)
 	for i := 0; i < len(instructions); i++ {
 		switch instructions[i].operator {
@@ -59,7 +60,9 @@ func output(instructions []Instruction) (err error) {
 			fmt.Printf("%c", data[ptr])
 		case opIn:
 			value, _ := reader.ReadByte()
+			fmt.Println(value)
 			data[ptr] = int16(value)
+			fmt.Printf("%c", data[ptr])
 		case opJmpFwd:
 			if data[ptr] == 0 {
 				i = int(instructions[i].operand)

@@ -7,7 +7,7 @@ func TestOperator(t *testing.T) {
 	instruction := Instruction{operator: opIncDp}
 
 	if instruction.operator != expectedOperator {
-		t.Fatalf("Expected %s, got %s", expectedOperator, instruction.operator)
+		t.Fatalf("Expected %d, got %d", expectedOperator, instruction.operator)
 	}
 }
 
@@ -16,6 +16,6 @@ func TestOperand(t *testing.T) {
 	instruction := Instruction{operand: 0}
 
 	if instruction.operand != expectedOperand {
-		t.Fatalf("Expected %s, got %s", expectedOperand, instruction.operand)
+		t.Fatalf("Expected %d, got %d", expectedOperand, instruction.operand)
 	}
 }
