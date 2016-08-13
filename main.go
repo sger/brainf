@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/codegangsta/cli"
@@ -43,10 +42,7 @@ func main() {
 			Usage:   "./brainf s `++++++++++`",
 			Action: func(c *cli.Context) error {
 
-				if len(c.Args().First()) > 0 {
-					fmt.Println(c.Args().First())
-				}
-
+				parseString(c)
 				return nil
 			},
 		},
