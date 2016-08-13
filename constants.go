@@ -1,5 +1,7 @@
 package main
 
+const SIZE int = 65535
+
 const (
 	opEnd = iota
 	opIncDp
