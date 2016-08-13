@@ -7,20 +7,6 @@ import (
 )
 
 func main() {
-	/*args := os.Args
-	if len(args) != 2 {
-		fmt.Printf("Usage: %s filename\n", args[0])
-		return
-	}
-
-	data, err := ioutil.ReadFile(args[1])
-	if err != nil {
-		fmt.Printf("Cannot open file %s\n", args[1])
-		return
-	}
-
-	fmt.Println(string(data))*/
-
 	app := cli.NewApp()
 	app.Name = "Brainf"
 	app.Version = "0.0.1"
