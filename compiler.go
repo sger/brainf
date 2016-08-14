@@ -1,79 +1,49 @@
 package main
 
-import (
-	"bufio"
-	"errors"
-	"fmt"
-	"os"
-)
+import "fmt"
 
-func compile(tokens string) (instructions []Instruction, err error) {
-	var programCounter = 0
-	var stackProgramCounter = 0
-	//stack := make([]int, 0)
-	var stack []int
-	for _, token := range tokens {
-		switch token {
-		case '>':
-			instructions = append(instructions, Instruction{operator: opIncDp})
-		case '<':
-			instructions = append(instructions, Instruction{operator: opDecDp})
-		case '+':
-			instructions = append(instructions, Instruction{operator: opIncVal})
-		case '-':
-			instructions = append(instructions, Instruction{operator: opDecVal})
-		case ',':
-			instructions = append(instructions, Instruction{operator: opIn})
-		case '.':
-			instructions = append(instructions, Instruction{operator: opOut})
-		case '[':
-			instructions = append(instructions, Instruction{operator: opJmpFwd})
-			stack = append(stack, programCounter)
-		case ']':
-			stackProgramCounter = stack[len(stack)-1]
-			instructions = append(instructions, Instruction{opJmpBck, stackProgramCounter})
-			instructions[stackProgramCounter].operand = programCounter
-		default:
-			programCounter--
-		}
-		programCounter++
-	}
-
-	return instructions, errors.New("Error")
-}
-
-func output(instructions []Instruction) (err error) {
-	data := make([]int16, SIZE)
+func compile(instructions string) (chan<- rune, <-chan rune) {
+	memory := make([]int, SIZE)
 	var ptr = 0
-	reader := bufio.NewReader(os.Stdin)
-	for i := 0; i < len(instructions); i++ {
-		switch instructions[i].operator {
-		case opIncDp:
-			ptr++
-		case opDecDp:
-			ptr--
-		case opIncVal:
-			data[ptr]++
-		case opDecVal:
-			data[ptr]--
-		case opOut:
-			fmt.Printf("%c", data[ptr])
-		case opIn:
-			value, _ := reader.ReadByte()
-			fmt.Println(value)
-			data[ptr] = int16(value)
-			fmt.Printf("%c", data[ptr])
-		case opJmpFwd:
-			if data[ptr] == 0 {
-				i = int(instructions[i].operand)
+
+	input := make(chan rune)
+	output := make(chan rune)
+
+	go func() {
+
+		defer close(input)
+		defer close(output)
+
+		for i := 0; i < len(instructions); i++ {
+			switch instructions[i] {
+			case '>':
+				ptr++
+			case '<':
+				ptr--
+			case '+':
+				memory[ptr]++
+			case '-':
+				memory[ptr]--
+			case ',':
+				memory[ptr] = int(<-input)
+			case '.':
+				output <- rune(memory[ptr])
+			case '[':
+				fmt.Println(memory[ptr])
+				if memory[ptr] == 0 {
+
+				}
+			case ']':
+				fmt.Println(memory[ptr])
+				if memory[ptr] > 0 {
+
+				}
+			default:
+
 			}
-		case opJmpBck:
-			if data[ptr] > 0 {
-				i = int(instructions[i].operand)
-			}
-		default:
-			return errors.New("Error")
 		}
-	}
-	return nil
+
+	}()
+
+	return input, output
 }

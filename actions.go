@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
+	"os"
 
 	"github.com/codegangsta/cli"
 )
@@ -15,19 +17,36 @@ func parseFile(c *cli.Context) error {
 			return nil
 		}
 
-		instructions, err := compile(string(data))
+		input, output := compile2(string(data))
 
-		if err != nil {
+		go reader(input)
+		printer(output)
 
-		}
-
-		err = output(instructions)
-
-		if err != nil {
-
-		}
 	}
 	return nil
+}
+
+func reader(input chan<- rune) {
+	reader := bufio.NewReader(os.Stdin)
+
+	for {
+		r, _, err := reader.ReadRune()
+		if err != nil {
+			panic(err.Error())
+		}
+		input <- r
+	}
+}
+
+func printer(output <-chan rune) {
+	for {
+		output, ok := <-output
+		if ok {
+			fmt.Print(string(output))
+		} else {
+			break
+		}
+	}
 }
 
 func parseString(c *cli.Context) error {
