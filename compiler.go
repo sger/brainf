@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 func compile(instructions string) (chan<- rune, <-chan rune) {
 	memory := make([]int, SIZE)
 	var ptr = 0
@@ -9,13 +7,15 @@ func compile(instructions string) (chan<- rune, <-chan rune) {
 	input := make(chan rune)
 	output := make(chan rune)
 
+	var counter = 0
+
 	go func() {
 
 		defer close(input)
 		defer close(output)
 
-		for i := 0; i < len(instructions); i++ {
-			switch instructions[i] {
+		for counter < len(instructions) {
+			switch instructions[counter] {
 			case '>':
 				ptr++
 			case '<':
@@ -29,18 +29,37 @@ func compile(instructions string) (chan<- rune, <-chan rune) {
 			case '.':
 				output <- rune(memory[ptr])
 			case '[':
-				fmt.Println(memory[ptr])
 				if memory[ptr] == 0 {
-
+					nestedCounter := 1
+					for nestedCounter > 0 {
+						counter++
+						operator := instructions[counter]
+						if operator == '[' {
+							nestedCounter++
+						} else if operator == ']' {
+							nestedCounter--
+						}
+					}
+					counter--
 				}
 			case ']':
-				fmt.Println(memory[ptr])
 				if memory[ptr] > 0 {
-
+					nestedCounter := 1
+					for nestedCounter > 0 {
+						counter--
+						operator := instructions[counter]
+						if operator == ']' {
+							nestedCounter++
+						} else if operator == '[' {
+							nestedCounter--
+						}
+					}
+					counter--
 				}
 			default:
 
 			}
+			counter++
 		}
 
 	}()

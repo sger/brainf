@@ -17,7 +17,7 @@ func parseFile(c *cli.Context) error {
 			return nil
 		}
 
-		input, output := compile2(string(data))
+		input, output := compile(string(data))
 
 		go reader(input)
 		printer(output)
