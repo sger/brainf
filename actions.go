@@ -51,7 +51,13 @@ func printer(output <-chan rune) {
 
 func parseString(c *cli.Context) error {
 	if len(c.Args().First()) > 0 {
+
 		fmt.Println(c.Args().First())
+
+		input, output := compile(c.Args().First())
+
+		go reader(input)
+		printer(output)
 	}
 	return nil
 }
