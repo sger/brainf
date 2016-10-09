@@ -1,7 +1,19 @@
 package main
 
-import "testing"
+import (
+	"testing"
+
+	. "github.com/smartystreets/goconvey/convey"
+)
 
 func TestCompilerOutput(t *testing.T) {
-
+	Convey("Compiler input", t, func() {
+		Convey("1 should print 1", func() {
+			program := ",."
+			input, output := compile(program)
+			input <- 1
+			result := <-output
+			So(result, ShouldEqual, 1)
+		})
+	})
 }
