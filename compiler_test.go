@@ -6,8 +6,8 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestCompilerOutput(t *testing.T) {
-	Convey("Compiler input", t, func() {
+func TestCompilerInput(t *testing.T) {
+	Convey("Compiler Input", t, func() {
 		Convey("1 should print 1", func() {
 			program := ",."
 			input, output := compile(program)
