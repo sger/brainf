@@ -17,3 +17,15 @@ func TestCompilerInput(t *testing.T) {
 		})
 	})
 }
+
+func testCompilerOutput(t *testing.T) {
+	Convey("Compiler output should be Hello World", func() {
+		program := "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.,+[-.[-]-,+]."
+		_, output := compile(program)
+		result := ""
+		for range "hello world" {
+			result += string(<-output)
+		}
+		So(result, ShouldEqual, "Hello World")
+	})
+}
