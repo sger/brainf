@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"os"
 
 	"github.com/codegangsta/cli"
@@ -24,11 +25,18 @@ func main() {
 		},
 		{
 			Name:    "string",
-			Aliases: []string{"s"},
-			Usage:   "./brainf s `++++++++++`",
+			Aliases: []string{"i"},
+			Usage:   "./brainf i",
 			Action: func(c *cli.Context) error {
 
-				parseString(c)
+				reader := bufio.NewReader(os.Stdin)
+				line, _, err := reader.ReadLine()
+				if err != nil {
+					panic(err.Error())
+				}
+
+				parseString(string(line))
+
 				return nil
 			},
 		},

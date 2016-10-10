@@ -19,6 +19,8 @@ func parseFile(c *cli.Context) error {
 
 		input, output := compile(string(data))
 
+		fmt.Println(input)
+
 		go reader(input)
 		printer(output)
 
@@ -49,15 +51,9 @@ func printer(output <-chan rune) {
 	}
 }
 
-func parseString(c *cli.Context) error {
-	if len(c.Args().First()) > 0 {
+func parseString(program string) {
+	input, output := compile(program)
 
-		fmt.Println(c.Args().First())
-
-		input, output := compile(c.Args().First())
-
-		go reader(input)
-		printer(output)
-	}
-	return nil
+	go reader(input)
+	printer(output)
 }
